@@ -1,16 +1,31 @@
-thePassword = str(1234)
+user_password = input('Please enter a password: ')
+hash = 'apfhtr'
+rotate_by = 13
 
-def crack_password(password):
-    passwd = list(thePassword)
-    for i in range(0, 10):
-        for j in range(0,10):
-            for k in range(0,10):
-                for l in range(0,10):
-                    if str(i) == passwd[0] and str(j) == passwd[1] and str(k) == passwd[2] and str(l) == passwd[3]:
-                        mylist=[str(i),str(j),str(k),str(l)]
-                        code = "".join(mylist)
-                        #print mylist
-                        #print code
-    print("Four Digit Password: {}".format(code))
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
-crack_password(1234)
+def encode_password(password):
+    i = 0
+    encoded_password = ''
+    while i < len(password):
+        letter = password[i]
+        i += 1
+        index_in_alphabet = alphabet.index(letter)
+        new_index = index_in_alphabet + rotate_by
+        if new_index >= len(alphabet):
+            new_index -= len(alphabet)
+        encoded_password += alphabet[new_index]
+    return encoded_password
+
+
+def crack_password(enc_password, user_password):
+    i = 0
+    for char in hash:
+        if char == enc_password[i]:
+            print("%s is the correct character for index %d" % (user_password[i], i))
+        else:
+            print("%s is the incorrect character for index %d" % (user_password[i], i))
+        i += 1
+
+
+crack_password(encode_password(user_password), user_password)
